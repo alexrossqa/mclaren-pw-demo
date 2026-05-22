@@ -1,0 +1,7 @@
+node_modules/
+playwright-report/
+test-results/
+.env
+*.code-workspace
+CLAUDE.md
+talking-points.md
