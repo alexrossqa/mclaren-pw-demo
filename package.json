@@ -1,0 +1,17 @@
+{
+  "name": "mclaren-css-demo",
+  "version": "1.0.0",
+  "description": "Playwright TypeScript CSS token and visual regression testing demo targeting mclaren.com",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:tokens": "playwright test css-tokens",
+    "test:update": "playwright test --update-snapshots",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  }
+}
