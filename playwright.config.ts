@@ -11,13 +11,16 @@ export default defineConfig({
     headless: true,
     viewport: { width: 1440, height: 900 },
     ignoreHTTPSErrors: true,
-    waitFor: 'domcontentloaded',
   },
 
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
     },
   ],
 });

@@ -15,7 +15,8 @@ function tokenSuite(pages: PageTokenSpec[]) {
     test.describe(pageSpec.name, () => {
       for (const token of pageSpec.tokens) {
         test(token.description, async ({ page }) => {
-          await page.goto(pageSpec.path);
+          await page.goto(pageSpec.path, { waitUntil: 'domcontentloaded' });
+          await page.waitForSelector(token.selector, { timeout: 15000 });
 
           const actual = await page.evaluate(
             ({ selector, property }) => {
