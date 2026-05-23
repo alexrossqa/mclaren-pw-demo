@@ -10,6 +10,7 @@
     "report": "playwright show-report"
   },
   "devDependencies": {
+    "@applitools/eyes-playwright": "^1.47.3",
     "@playwright/test": "^1.44.0",
     "@types/node": "^20.19.41",
     "typescript": "^5.4.0"
