@@ -54,7 +54,7 @@ Full-page capture of the Artura hero. OneTrust cookie banner is dismissed before
 Captures the 750S page viewport with the hero `img.bg-image` element defined as an ignore region in code. The test injects a different image src via `page.evaluate()` before capture — the test still passes because the image is excluded from the diff. Removing `.ignore()` causes the test to fail, proving the region was doing the work.
 
 ### Notes
-- Ignore regions defined in code travel with the test, are version-controlled, and apply on every run. Regions drawn in the Applitools UI exist only in the dashboard and can drift silently.
+- Ignore regions can be defined in the Applitools dashboard UI by drawing on the baseline image, or in the test code as shown here. Defining them in code means they are part of the repo — any change to an ignore region goes through a pull request and is visible to the team. Regions defined only in the dashboard can be changed or deleted by anyone with dashboard access, with no record of what changed or why.
 - Visual tests run against `--project=chromium` only — UFG handles cross-browser rendering in the cloud.
 - `retries: 0` is scoped to visual describes — Playwright retries create duplicate Applitools results.
 
