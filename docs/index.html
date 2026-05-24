@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>McLaren QA Demo — Playwright Test Suite</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+
+    header {
+      background: #111;
+      border-bottom: 3px solid #f36d1e;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      max-width: 640px;
+      margin: 0 auto;
+      color: #aaa;
+      font-size: 1rem;
+    }
+
+    .accent { color: #f36d1e; }
+
+    nav {
+      background: #111;
+      border-bottom: 1px solid #222;
+      padding: 0 24px;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 14px 20px;
+      display: block;
+      border-bottom: 3px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    nav a:hover {
+      color: #f36d1e;
+      border-bottom-color: #f36d1e;
+    }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    section {
+      padding-top: 72px;
+    }
+
+    section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #222;
+    }
+
+    section h2 .num {
+      color: #f36d1e;
+      margin-right: 10px;
+    }
+
+    .summary {
+      background: #161616;
+      border-left: 3px solid #f36d1e;
+      padding: 16px 20px;
+      margin: 20px 0 28px;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: #bbb;
+      font-size: 0.95rem;
+    }
+
+    .screenshot-block {
+      margin: 28px 0;
+    }
+
+    .screenshot-block img {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #2a2a2a;
+      display: block;
+    }
+
+    .screenshot-block figcaption {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: #777;
+      font-style: italic;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 28px 0;
+    }
+
+    @media (max-width: 600px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .callout {
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+
+    .callout h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #f36d1e;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .callout p {
+      margin-bottom: 0;
+      font-size: 0.9rem;
+    }
+
+    ul {
+      margin: 0 0 16px 20px;
+      color: #bbb;
+      font-size: 0.95rem;
+    }
+
+    ul li { margin-bottom: 6px; }
+
+    code {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 3px;
+      padding: 2px 7px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 0.85em;
+      color: #f36d1e;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 2px 10px;
+      font-size: 0.78rem;
+      color: #888;
+      margin-right: 6px;
+      margin-bottom: 4px;
+    }
+
+    .pass { color: #4caf50; font-weight: 600; }
+    .fail { color: #f44336; font-weight: 600; }
+
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: #444;
+      font-size: 0.82rem;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    footer a { color: #666; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>McLaren QA Demo — <span class="accent">Playwright Test Suite</span></h1>
+  <p>An automated test suite covering CSS token contracts and visual regression across mclaren.com, built with Playwright and Applitools.</p>
+</header>
+
+<nav>
+  <a href="#overview">Overview</a>
+  <a href="#css-tokens">CSS Tokens</a>
+  <a href="#visual-static">Visual Regression</a>
+  <a href="#visual-dynamic">Dynamic Content</a>
+  <a href="#ai-vs-pixel">AI vs Pixel Diff</a>
+</nav>
+
+<main>
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <h2><span class="num">01</span>Overview</h2>
+
+    <div class="summary">
+      The suite catches two distinct categories of defect: CSS design tokens drifting out of spec, and visual regressions on live pages. It runs against real production URLs with no mocking.
+    </div>
+
+    <p>McLaren's website spans multiple subdomains and templates. The cars subdomain (<code>cars.mclaren.com</code>) uses different CSS values to the main site (<code>www.mclaren.com/racing</code>). A deploy that accidentally applies the wrong template will pass functional tests but break the brand.</p>
+
+    <p>This suite provides two layers of protection:</p>
+
+    <ul>
+      <li><strong>CSS token tests</strong> — read the computed styles the browser actually renders and compare them against a golden spec. Fast, deterministic, and precise to the pixel.</li>
+      <li><strong>Visual regression tests</strong> — take full-page snapshots and compare them against a baseline using AI. Catches layout shifts, image swaps, and anything the token tests do not cover.</li>
+    </ul>
+
+    <div class="callout">
+      <h3>Tech stack</h3>
+      <p>
+        <span class="tag">Playwright</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Applitools Eyes</span>
+        <span class="tag">Ultrafast Grid</span>
+        <span class="tag">Chromium</span>
+        <span class="tag">Firefox</span>
+        <span class="tag">Safari</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- CSS TOKENS -->
+  <section id="css-tokens">
+    <h2><span class="num">02</span>CSS Token Contracts</h2>
+
+    <div class="summary">
+      Each page is tested against a spec object that lists the expected computed value for every design token. If a deploy changes a font size, brand colour, or letter spacing, the test fails immediately and names the exact property.
+    </div>
+
+    <p>The key technique is <code>getComputedStyle()</code> — the browser's own API for reading what it actually rendered. This is more reliable than reading the stylesheet: it reflects inherited values, overrides, and any runtime changes.</p>
+
+    <p>Tokens are defined once as a TypeScript object and reused across every page in that template group. The Artura, Artura Spider, 750S, and 750S Spider pages all share the same spec. The Racing pages share a separate spec because their token values are different.</p>
+
+    <p>The screenshot below shows what happens when the wrong spec is applied to the wrong page — in this case, the supercar token spec being checked against the Racing page. All six token checks fail immediately with a clear message naming the property and the expected vs actual value.</p>
+
+    <figure class="screenshot-block">
+      <img src="images/Screenshot 2026-05-24 180221.png" alt="Playwright HTML report showing CSS token failures. Six tests fail for Racing (wrong group): body font family, H1 colour, H1 font size, CTA background, CTA text colour, and CTA letter spacing.">
+      <figcaption>CSS token failure demo: the Racing page checked against the supercar spec. Six failures, each naming the exact property that is wrong. The Artura tests above them all pass.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <h3>Why this is useful as a quality gate</h3>
+      <p>Token tests run in seconds and need no visual comparison or baseline image. They can be added to the CI pipeline on every pull request and will catch template regressions before they reach production.</p>
+    </div>
+  </section>
+
+  <!-- VISUAL REGRESSION -->
+  <section id="visual-static">
+    <h2><span class="num">03</span>Visual Regression — Static Pages</h2>
+
+    <div class="summary">
+      Playwright drives the browser once. Applitools sends that snapshot to its Ultrafast Grid, which renders it in Chrome, Firefox, and Safari simultaneously and compares each against the approved baseline.
+    </div>
+
+    <p>One test run produces three results — one per browser — without the suite needing to navigate the page three times. This is the practical benefit of the Ultrafast Grid: cross-browser coverage at near the cost of a single-browser run.</p>
+
+    <p>The screenshot below shows the Applitools dashboard after a passing run. Three results are shown for "Artura — full page": Firefox 150, Chrome 148, and Safari 26 — all on a 1440x900 desktop viewport.</p>
+
+    <figure class="screenshot-block">
+      <img src="images/Screenshot 2026-05-24 170857.png" alt="Applitools dashboard showing the McLaren Visual Regression batch. Three results for Artura full page, one each for Firefox, Chrome and Safari, all marked as New and passing.">
+      <figcaption>Applitools Ultrafast Grid results: one Playwright test, three browser renders. The batch is named "McLaren Visual Regression" and run by Alex Ross.</figcaption>
+    </figure>
+
+    <p>The second static test demonstrates <strong>ignore regions</strong>. The 750S hero image is swapped to a different image before the snapshot is taken. The ignore region excludes it from the diff, so the test passes — demonstrating that the rest of the page is stable even when one dynamic asset changes.</p>
+
+    <div class="callout">
+      <h3>Why define ignore regions in code rather than the Applitools dashboard?</h3>
+      <p>Ignore regions defined in the test file travel with the code. They appear in pull request reviews, they are version controlled, and they cannot be changed without a code change. Regions defined only in the dashboard are invisible to reviewers and can be modified silently.</p>
+    </div>
+  </section>
+
+  <!-- DYNAMIC CONTENT -->
+  <section id="visual-dynamic">
+    <h2><span class="num">04</span>Dynamic Content — Animated Counters</h2>
+
+    <div class="summary">
+      The Artura Facts &amp; Figures section contains three counters that animate from zero to their target values on scroll. A snapshot taken during the animation is useless. The test solves this with a two-phase stability check before handing off to Applitools.
+    </div>
+
+    <p>The counters display Top Speed (330 km/h), Torque (720 nm), and Power (700 ps). When the section enters the viewport, each counter counts up from zero. The animation takes roughly one second.</p>
+
+    <figure class="screenshot-block">
+      <img src="images/Screenshot 2026-05-24 160820.png" alt="The Artura Facts and Figures section showing three counter cards: 330 km/h Top Speed, 720 nm Torque, and 700 ps Power.">
+      <figcaption>The target state: all three counters have settled at their final values. This is what the Applitools snapshot captures.</figcaption>
+    </figure>
+
+    <p>The two-phase approach:</p>
+
+    <ul>
+      <li><strong>Phase 1</strong> — wait until all counters show a non-zero value. This confirms the animation has started and the section is visible.</li>
+      <li><strong>Phase 2</strong> — poll every 300ms and compare the current values to the previous poll. When two consecutive polls match, the animation has finished.</li>
+    </ul>
+
+    <p>Only then does Applitools take the snapshot. The result is always captured at the settled state — no flicker, no mid-animation frames.</p>
+
+    <div class="callout">
+      <h3>Why not just add a fixed sleep?</h3>
+      <p>A fixed delay such as <code>waitForTimeout(2000)</code> is fragile: too short on a slow network, too long on a fast one. The stability poll responds to the actual animation state rather than guessing how long it takes.</p>
+    </div>
+  </section>
+
+  <!-- AI VS PIXEL DIFF -->
+  <section id="ai-vs-pixel">
+    <h2><span class="num">05</span>AI Diff vs Pixel Diff</h2>
+
+    <div class="summary">
+      Playwright's built-in screenshot comparison fails the moment any pixel changes — including anti-aliasing, font rendering, and sub-pixel differences between OS versions. Applitools' AI diff understands the visual intent and ignores noise while catching real regressions.
+    </div>
+
+    <p>To demonstrate the difference, the same injected defect is tested both ways. The Artura hero H1 letter spacing is increased by 2px using JavaScript before the snapshot is taken. This is a small but real change to the rendered text.</p>
+
+    <p>With <code>toHaveScreenshot()</code>, Playwright reports 11,071 pixels are different — 2% of the image. The diff is exact and unforgiving.</p>
+
+    <div class="two-col">
+      <figure class="screenshot-block">
+        <img src="images/Screenshot 2026-05-24 170043.png" alt="Playwright HTML report showing the pixel diff test has failed. Error reads: 11071 pixels (ratio 0.02 of all image pixels) are different.">
+        <figcaption>Playwright pixel diff failure: 11,071 pixels flagged. The test name and file line are reported precisely.</figcaption>
+      </figure>
+      <figure class="screenshot-block">
+        <img src="images/Screenshot 2026-05-24 170141.png" alt="Playwright HTML report showing the image mismatch view. The diff image shows the ARTURA COUPE heading highlighted in red where the letter spacing has changed.">
+        <figcaption>Diff view: red pixels highlight where letter spacing increased. The heading text is clearly the source of the difference.</figcaption>
+      </figure>
+    </div>
+
+    <figure class="screenshot-block">
+      <img src="images/Screenshot 2026-05-24 170121.png" alt="Playwright HTML report showing the side-by-side comparison between the expected baseline screenshot and the actual screenshot with the modified letter spacing.">
+      <figcaption>Side-by-side view: expected (baseline) on the left, actual (with letter-spacing change) on the right. The difference is subtle but the pixel count flags it.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <h3>The problem with pixel diff on live sites</h3>
+      <p>A page like mclaren.com contains hero images served from a CDN, videos, and content that changes regularly. A pure pixel diff would generate failures on every run — not because the design broke, but because the content changed. Applitools' AI understands layout structure and ignores cosmetic noise, so the suite stays green when content rotates and red when something actually breaks.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Built with <a href="https://playwright.dev">Playwright</a> and <a href="https://applitools.com">Applitools Eyes</a> &mdash; Alex Ross, May 2026</p>
+</footer>
+
+</body>
+</html>
