@@ -8,24 +8,6 @@ import {
   BrowserType,
 } from '@applitools/eyes-playwright';
 
-// ─── WHY THIS FILE EXISTS ─────────────────────────────────────────────────────
-// toHaveScreenshot() uses pixel-perfect matching — it compares every pixel
-// against a stored PNG. It fails on rendering noise: sub-pixel font differences,
-// anti-aliasing variations, minor layout shifts from ads or late-loading assets.
-// Cross-browser means separate baseline files per browser/OS combination.
-//
-// Applitools Visual AI asks "would a human notice this?" — it ignores rendering
-// noise and only flags meaningful visual changes. One test run, all browsers
-// rendered in the cloud via Ultrafast Grid, results in the dashboard.
-//
-// Run both suites. toHaveScreenshot() generates snapshot files in this repo
-// (one per browser). Applitools generates nothing locally — results live in
-// the dashboard. At 1000 pages × 3 browsers = 3000 PNGs to store and maintain
-// vs one Applitools batch.
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ─── SHARED PAGE SETUP ───────────────────────────────────────────────────────
-
 async function loadArtura(page: any) {
   await page.goto('https://cars.mclaren.com/gl_en/artura', { waitUntil: 'domcontentloaded' });
   try {
@@ -33,18 +15,10 @@ async function loadArtura(page: any) {
     await page.click('#onetrust-accept-btn-handler');
     await page.waitForSelector('#onetrust-banner-sdk', { state: 'hidden', timeout: 5000 });
   } catch {
-    // banner didn't appear — continue
+    // banner didn't appear
   }
   await page.waitForSelector('h1', { timeout: 15000 });
 }
-
-// ─── SUITE A: PIXEL DIFF (toHaveScreenshot) ──────────────────────────────────
-// Baselines are PNG files committed to this repo under snapshots/.
-// Playwright generates one file per browser — run on Chromium, you get
-// artura-hero-chromium.png. Run on WebKit, you get artura-hero-webkit.png.
-// Any rendering difference between browsers = a different file = separate
-// maintenance burden. On CI, the OS matters too (Linux renders fonts differently
-// to macOS) — baselines generated on one machine may fail on another.
 
 test.describe('Pixel diff — toHaveScreenshot()', () => {
   test.describe.configure({ retries: 0 });
@@ -52,10 +26,6 @@ test.describe('Pixel diff — toHaveScreenshot()', () => {
   test('Artura — hero (pixel diff)', async ({ page }) => {
     await loadArtura(page);
 
-    // Inject a subtle styling change — widens h1 letter-spacing slightly
-    // Pixel diff catches this as thousands of changed pixels and fails.
-    // The Applitools AI diff test below runs the same page without injection
-    // and passes — AI understands this level of change is not meaningful.
     await page.evaluate(() => {
       const h1 = document.querySelector('h1');
       if (h1) h1.style.letterSpacing = '4px';
@@ -67,11 +37,6 @@ test.describe('Pixel diff — toHaveScreenshot()', () => {
     });
   });
 });
-
-// ─── SUITE B: AI DIFF (Applitools) ───────────────────────────────────────────
-// No snapshot files. No per-browser baselines. Playwright captures the DOM once;
-// Applitools renders it in Chrome, Firefox, and Safari in the cloud and compares
-// using Visual AI — rendering noise is ignored, meaningful changes are flagged.
 
 const aiRunner = new VisualGridRunner({ testConcurrency: 5 });
 const aiConfig = new Configuration();

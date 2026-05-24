@@ -8,9 +8,6 @@ import {
   BrowserType,
 } from '@applitools/eyes-playwright';
 
-// ─── SUITE-LEVEL SETUP ────────────────────────────────────────────────────────
-// Same runner / config pattern as visual-static — one DOM capture, three browsers.
-
 const runner = new VisualGridRunner({ testConcurrency: 5 });
 
 const config = new Configuration();
@@ -19,8 +16,6 @@ config.setBatch(new BatchInfo({ name: 'McLaren Visual Regression' }));
 config.addBrowser(1440, 900, BrowserType.CHROME);
 config.addBrowser(1440, 900, BrowserType.FIREFOX);
 config.addBrowser(1440, 900, BrowserType.SAFARI);
-
-// ─── TESTS ────────────────────────────────────────────────────────────────────
 
 test.describe('Visual — Dynamic content', () => {
   test.describe.configure({ retries: 0, timeout: 120000 });
@@ -38,28 +33,22 @@ test.describe('Visual — Dynamic content', () => {
   test('Artura — spec highlights', async ({ page }) => {
     await page.goto('https://cars.mclaren.com/gl_en/artura', { waitUntil: 'domcontentloaded' });
 
-    // Dismiss OneTrust banner
     try {
       await page.waitForSelector('#onetrust-accept-btn-handler', { timeout: 10000 });
       await page.click('#onetrust-accept-btn-handler');
       await page.waitForSelector('#onetrust-banner-sdk', { state: 'hidden', timeout: 5000 });
     } catch {
-      // banner didn't appear — continue
+      // banner didn't appear
     }
 
-    // Scroll into view — JS resets span.counter elements to 0 on load and only
-    // triggers the count-up animation when the section enters the viewport
     await page.locator('section.highlighted-specs').scrollIntoViewIfNeeded();
 
-    // Phase 1: wait until counters leave zero (animation has started)
     await page.waitForFunction(() => {
       const counters = document.querySelectorAll('span.counter');
       return counters.length > 0 &&
         Array.from(counters).every(el => el.textContent?.trim() !== '0');
     }, { timeout: 10000 });
 
-    // Phase 2: wait until values stop changing — two consecutive polls 300ms apart
-    // must match before we consider the animation settled
     await page.waitForFunction(() => {
       const current = Array.from(document.querySelectorAll('span.counter'))
         .map(el => el.textContent?.trim()).join(',');

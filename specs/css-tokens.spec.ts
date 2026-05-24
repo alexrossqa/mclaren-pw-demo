@@ -2,13 +2,8 @@ import { test, expect } from '@playwright/test';
 import {
   SUPERCAR_PAGES,
   RACING_PAGES,
-  SUPERCAR_PAGES_WITH_FAILURE,
   type PageTokenSpec,
 } from '../fixtures/token-specs';
-
-// ─── TOKEN TEST RUNNER ────────────────────────────────────────────────────────
-// Loops over a page group and generates one test per token per page.
-// Test names surface in the HTML report: "Artura > Primary CTA background"
 
 function tokenSuite(pages: PageTokenSpec[]) {
   for (const pageSpec of pages) {
@@ -34,8 +29,6 @@ function tokenSuite(pages: PageTokenSpec[]) {
   }
 }
 
-// ─── SUITES ───────────────────────────────────────────────────────────────────
-
 test.describe('Supercars — token contracts', () => {
   tokenSuite(SUPERCAR_PAGES);
 });
@@ -44,11 +37,7 @@ test.describe('Racing — token contracts', () => {
   tokenSuite(RACING_PAGES);
 });
 
-// ─── DEMO FAILURE ─────────────────────────────────────────────────────────────
-// Uncomment to show a racing page tested against the supercars token spec.
-// Fails on fontFamily — report shows expected vs actual side by side.
-// Re-comment to restore green.
-//
+// To demo the failure, also add SUPERCAR_PAGES_WITH_FAILURE to the import above, then uncomment:
 // test.describe('Cross-template failure demo', () => {
 //   tokenSuite(SUPERCAR_PAGES_WITH_FAILURE);
 // });
