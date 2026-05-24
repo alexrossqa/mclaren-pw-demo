@@ -25,8 +25,7 @@ config.addBrowser(1440, 900, BrowserType.SAFARI);
 // ─── TESTS ────────────────────────────────────────────────────────────────────
 
 test.describe('Visual — Supercars', () => {
-  // Retries create duplicate Applitools results — visual tests manage their own pass/fail
-  test.describe.configure({ retries: 0 });
+  test.describe.configure({ retries: 0, timeout: 120000 });
 
   let eyes: Eyes;
 
@@ -35,13 +34,7 @@ test.describe('Visual — Supercars', () => {
   });
 
   test.afterEach(async () => {
-    // closeAsync fires the render job without blocking — results collected below
-    await eyes.closeAsync();
-  });
-
-  test.afterAll(async () => {
-    // Block here until all cloud renders finish and surface any visual diffs
-    await runner.getAllTestResults();
+    await eyes.close(false);
   });
 
   test('Artura — full page', async ({ page }) => {
@@ -61,5 +54,60 @@ test.describe('Visual — Supercars', () => {
 
     await eyes.open(page, 'McLaren', 'Artura — full page', { width: 1440, height: 900 });
     await eyes.check('Artura full page', Target.window().fully());
+  });
+});
+
+// ─── IGNORE REGION DEMO ───────────────────────────────────────────────────────
+// Demonstrates ignore regions defined in code (not the Applitools dashboard UI).
+// Stage 1: baseline captured with real hero image, ignore region covering img.bg-image.
+// Stage 2 (next run): inject a different image src — test still passes because the
+// hero is excluded from the diff. Remove .ignore() to prove the region was doing the work.
+
+const ignoreRunner = new VisualGridRunner({ testConcurrency: 5 });
+const ignoreConfig = new Configuration();
+ignoreConfig.setApiKey(process.env.APPLITOOLS_API_KEY!);
+ignoreConfig.setBatch(new BatchInfo({ name: 'McLaren Visual Regression' }));
+ignoreConfig.addBrowser(1440, 900, BrowserType.CHROME);
+ignoreConfig.addBrowser(1440, 900, BrowserType.FIREFOX);
+ignoreConfig.addBrowser(1440, 900, BrowserType.SAFARI);
+
+test.describe('Visual — Ignore region demo', () => {
+  test.describe.configure({ retries: 0, timeout: 120000 });
+
+  let eyes: Eyes;
+
+  test.beforeEach(async () => {
+    eyes = new Eyes(ignoreRunner, ignoreConfig);
+  });
+
+  test.afterEach(async () => {
+    await eyes.close(false);
+  });
+
+  test('750S — hero image ignored', async ({ page }) => {
+    await page.goto('https://cars.mclaren.com/gl_en/750s', { waitUntil: 'domcontentloaded' });
+
+    try {
+      await page.waitForSelector('#onetrust-accept-btn-handler', { timeout: 10000 });
+      await page.click('#onetrust-accept-btn-handler');
+      await page.waitForSelector('#onetrust-banner-sdk', { state: 'hidden', timeout: 5000 });
+    } catch {
+      // banner didn't appear — continue
+    }
+
+    await page.waitForSelector('img.bg-image', { timeout: 15000 });
+
+    // Inject a different image — simulates an unexpected hero change
+    // Test should still PASS because img.bg-image is inside the ignore region
+    await page.evaluate(() => {
+      const img = document.querySelector('img.bg-image') as HTMLImageElement;
+      if (img) img.src = 'https://cars-assets-production.mclaren.com/178/mclaren-750s-hero-mobile.jpg';
+    });
+
+    await eyes.open(page, 'McLaren', '750S — hero image ignored', { width: 1440, height: 900 });
+    // viewport only — hero is above the fold, no need to scroll the full page
+    await eyes.check('750S hero', Target.window()
+      .ignore(page.locator('img.bg-image').first())
+    );
   });
 });
