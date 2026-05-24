@@ -40,7 +40,7 @@ Tokens checked: `fontFamily`, `color`, `fontSize`, `backgroundColor`, `letterSpa
 **File:** `specs/visual-static.spec.ts`
 
 ### Mission
-Catch unintended visual changes to brand hero pages before they reach production.
+Catch unintended visual changes to key product pages before they reach production.
 
 ### Method
 Applitools Eyes with Ultrafast Grid (UFG). Playwright drives Chromium locally and captures the DOM once. Applitools renders it in Chrome, Firefox, and Safari simultaneously in the cloud — one test run produces three browser results without running three browsers locally.
