@@ -1,6 +1,6 @@
 # McLaren QA Demo — Playwright + Applitools
 
-Playwright TypeScript test suite targeting mclaren.com. Three test areas: CSS token contracts, visual regression (static and dynamic content), and a direct comparison of pixel-diff vs AI-powered visual matching.
+Playwright TypeScript test suite targeting `cars.mclaren.com` and `www.mclaren.com`. Three test areas: CSS token contracts, visual regression (static and dynamic content), and a direct comparison of pixel-diff vs AI-powered visual matching.
 
 **Stack:** Playwright · TypeScript · Applitools Eyes (Ultrafast Grid) · Chromium + WebKit
 
@@ -23,8 +23,8 @@ A factory function (`tokenSuite()`) generates one named test per token per page,
 
 | Page group | Pages | Tokens per page | Total assertions |
 |---|---|---|---|
-| Supercars | Artura, Artura Spider, 750S, 750S Spider | 6 | 24 |
-| Racing | www.mclaren.com/racing | 2 | 2 |
+| Supercars (`cars.mclaren.com`) | Artura, Artura Spider, 750S, 750S Spider | 6 | 24 |
+| Racing (`www.mclaren.com/racing`) | Racing | 2 | 2 |
 
 Tokens checked: `fontFamily`, `color`, `fontSize`, `backgroundColor`, `letterSpacing`
 
