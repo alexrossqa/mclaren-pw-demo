@@ -1,6 +1,6 @@
 # McLaren QA Demo: Playwright + Applitools
 
-Playwright TypeScript test suite targeting `cars.mclaren.com` and `www.mclaren.com`. Three test areas: CSS token contracts, visual regression (static and dynamic content), and a direct comparison of pixel-diff vs AI-powered visual matching.
+Playwright TypeScript test suite targeting `cars.mclaren.com` and `www.mclaren.com`. Three test areas: CSS token contracts, visual regression (static pages), and visual regression (dynamic content).
 
 **Stack:** Playwright · TypeScript · Applitools Eyes (Ultrafast Grid) · Chromium + WebKit
 
@@ -81,35 +81,6 @@ The Artura specification section contains three animated counters (top speed, to
 
 ---
 
-## Section 4: AI Diff vs Pixel Diff
-
-**File:** `specs/visual-ai.spec.ts`
-
-### Mission
-Demonstrate why AI-powered visual matching produces fewer false positives than pixel-perfect comparison, and illustrate the maintenance cost of storing browser-specific baselines.
-
-### Method
-Two describe blocks, same page, same scenario:
-
-1. **`toHaveScreenshot()`** (Playwright built-in): pixel-perfect diff. Baselines are PNG files committed to the repo, named with browser and OS baked in (`artura-hero-chromium-win32.png`). A CSS change is injected via `page.evaluate()` before capture.
-
-2. **Applitools AI diff:** same page, no injection, no local PNG files. Results appear in the Applitools dashboard across Chrome, Firefox, and Safari.
-
-### Tests
-
-**Artura: hero (pixel diff)**  
-Injects `h1 { letter-spacing: 4px }` before the screenshot. Fails with 11,071 pixels different. A single CSS property change on the heading text triggers a cascade of pixel mismatches across the entire text area. Results visible in the Playwright HTML report.
-
-**Artura: hero (AI diff)**  
-Same page without injection. Passes on Chrome, Firefox, and Safari in the Applitools dashboard. AI matching treats minor rendering variation as noise.
-
-### Notes
-- The pixel diff baseline filename (`artura-hero-chromium-win32.png`) encodes browser and OS. Run the same test on a Linux CI server and it looks for `artura-hero-chromium-linux.png`, a file that doesn't exist. Baselines generated on one machine don't transfer.
-- At scale: 1000 pages x 3 browsers = 3000 PNG files to store, review, and regenerate on every intentional redesign. Applitools stores nothing locally.
-- `toHaveScreenshot()` results appear in the **Playwright HTML report**. Applitools results appear in the **Applitools dashboard**. They are separate tools with separate outputs.
-
----
-
 ## Setup
 
 ```bash
@@ -131,7 +102,6 @@ npx playwright test css-tokens.spec.ts
 # Visual tests (Chromium only - Applitools UFG handles cross-browser)
 npx playwright test visual-static.spec.ts --project=chromium
 npx playwright test visual-dynamic.spec.ts --project=chromium
-npx playwright test visual-ai.spec.ts --project=chromium
 
 # All visual specs in one command
 npm run test:visual

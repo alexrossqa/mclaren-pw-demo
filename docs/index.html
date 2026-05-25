@@ -210,7 +210,6 @@
   <a href="#css-tokens">CSS Tokens</a>
   <a href="#visual-static">Visual Regression</a>
   <a href="#visual-dynamic">Dynamic Content</a>
-  <a href="#ai-vs-pixel">AI vs Pixel Diff</a>
 </nav>
 
 <main>
@@ -326,39 +325,6 @@
     </div>
   </section>
 
-  <!-- AI VS PIXEL DIFF -->
-  <section id="ai-vs-pixel">
-    <h2><span class="num">05</span>AI Diff vs Pixel Diff</h2>
-
-    <div class="summary">
-      Playwright's built-in screenshot comparison fails the moment any pixel changes — including anti-aliasing, font rendering, and sub-pixel differences between OS versions. Applitools' AI diff understands the visual intent and ignores noise while catching real regressions.
-    </div>
-
-    <p>To demonstrate the difference, the same injected defect is tested both ways. The Artura hero H1 letter spacing is increased by 2px using JavaScript before the snapshot is taken. This is a small but real change to the rendered text.</p>
-
-    <p>With <code>toHaveScreenshot()</code>, Playwright reports 11,071 pixels are different — 2% of the image. The diff is exact and unforgiving.</p>
-
-    <div class="two-col">
-      <figure class="screenshot-block">
-        <img src="images/Screenshot 2026-05-24 170043.png" alt="Playwright HTML report showing the pixel diff test has failed. Error reads: 11071 pixels (ratio 0.02 of all image pixels) are different.">
-        <figcaption>Playwright pixel diff failure: 11,071 pixels flagged. The test name and file line are reported precisely.</figcaption>
-      </figure>
-      <figure class="screenshot-block">
-        <img src="images/Screenshot 2026-05-24 170141.png" alt="Playwright HTML report showing the image mismatch view. The diff image shows the ARTURA COUPE heading highlighted in red where the letter spacing has changed.">
-        <figcaption>Diff view: red pixels highlight where letter spacing increased. The heading text is clearly the source of the difference.</figcaption>
-      </figure>
-    </div>
-
-    <figure class="screenshot-block">
-      <img src="images/Screenshot 2026-05-24 170121.png" alt="Playwright HTML report showing the side-by-side comparison between the expected baseline screenshot and the actual screenshot with the modified letter spacing.">
-      <figcaption>Side-by-side view: expected (baseline) on the left, actual (with letter-spacing change) on the right. The difference is subtle but the pixel count flags it.</figcaption>
-    </figure>
-
-    <div class="callout">
-      <h3>The problem with pixel diff on live sites</h3>
-      <p>A page like mclaren.com contains hero images served from a CDN, videos, and content that changes regularly. A pure pixel diff would generate failures on every run — not because the design broke, but because the content changed. Applitools' AI understands layout structure and ignores cosmetic noise, so the suite stays green when content rotates and red when something actually breaks.</p>
-    </div>
-  </section>
 
 </main>
 
