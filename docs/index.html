@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>McLaren QA Demo — Playwright Test Suite</title>
+  <title>McLaren QA Demo - Playwright Test Suite</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -264,7 +264,7 @@
       <figcaption>CSS token failure demo: the Racing page checked against the supercar spec. Six failures, each naming the exact property that is wrong. The Artura tests above them all pass.</figcaption>
     </figure>
 
-    <p>Drilling into a single failure shows exactly what went wrong. The test expected the supercar font stack — <code>"Noto Sans", ui-sans-serif, system-ui</code> — but the Racing page returned <code>"Noto Sans Fallback"</code> as an additional entry. The difference is highlighted directly in the report.</p>
+    <p>Drilling into a single failure shows exactly what went wrong. The test expected the supercar font stack - <code>"Noto Sans", ui-sans-serif, system-ui</code> - but the Racing page returned <code>"Noto Sans Fallback"</code> as an additional entry. The difference is highlighted directly in the report.</p>
 
     <figure class="screenshot-block">
       <img src="images/error_report.png" alt="Playwright HTML report showing a single token failure in detail. The body font family test fails: expected Noto Sans ui-sans-serif system-ui but received Noto Sans with Noto Sans Fallback added. The difference is highlighted in red.">
@@ -279,7 +279,7 @@
 
   <!-- VISUAL REGRESSION -->
   <section id="visual-static">
-    <h2><span class="num">03</span>Visual Regression — Static Pages</h2>
+    <h2><span class="num">03</span>Visual Regression - Static Pages</h2>
 
     <div class="summary">
       Playwright drives the browser once. Applitools sends that snapshot to its Ultrafast Grid, which renders it in Chrome, Firefox, and Safari simultaneously and compares each against the approved baseline.
@@ -298,7 +298,7 @@
 
     <p>When a legitimate design change is made, the same process repeats: the test shows as <strong>Unresolved</strong>, a reviewer approves the new snapshot, and it becomes the updated baseline. This manual approval step is intentional. It ensures no visual change goes live without a sign-off, and it creates an audit trail of every approved state.</p>
 
-    <p>The second static test demonstrates <strong>ignore regions</strong>. The 750S hero image is swapped to a different image before the snapshot is taken. The ignore region excludes it from the diff, so the test passes — demonstrating that the rest of the page is stable even when one dynamic asset changes.</p>
+    <p>The second static test demonstrates <strong>ignore regions</strong>. The 750S hero image is swapped to a different image before the snapshot is taken. The ignore region excludes it from the diff, so the test passes - demonstrating that the rest of the page is stable even when one dynamic asset changes.</p>
 
     <div class="callout">
       <h3>Why define ignore regions in code rather than the Applitools dashboard?</h3>
@@ -308,7 +308,7 @@
 
   <!-- DYNAMIC CONTENT -->
   <section id="visual-dynamic">
-    <h2><span class="num">04</span>Dynamic Content — Animated Counters</h2>
+    <h2><span class="num">04</span>Dynamic Content - Animated Counters</h2>
 
     <div class="summary">
       The Artura Facts &amp; Figures section contains three counters that animate from zero to their target values on scroll. A snapshot taken during the animation is useless. The test solves this with a two-phase stability check before handing off to Applitools.
@@ -328,7 +328,7 @@
       <li><strong>Phase 2</strong>: poll every 300ms and compare the current values to the previous poll. When two consecutive polls match, the animation has finished.</li>
     </ul>
 
-    <p>Only then does Applitools take the snapshot. The result is always captured at the settled state — no flicker, no mid-animation frames.</p>
+    <p>Only then does Applitools take the snapshot. The result is always captured at the settled state - no flicker, no mid-animation frames.</p>
 
     <div class="callout">
       <h3>Why not just add a fixed sleep?</h3>
