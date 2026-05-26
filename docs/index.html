@@ -201,7 +201,7 @@
 <body>
 
 <header>
-  <h1>McLaren QA Demo — <span class="accent">Playwright Test Suite</span></h1>
+  <h1>McLaren QA Demo: <span class="accent">Playwright Test Suite</span></h1>
   <p>An automated test suite covering CSS token contracts and visual regression across mclaren.com, built with Playwright and Applitools.</p>
 </header>
 
@@ -227,8 +227,8 @@
     <p>This suite provides two layers of protection:</p>
 
     <ul>
-      <li><strong>CSS token tests</strong> — read the computed styles the browser actually renders and compare them against a golden spec. Fast, deterministic, and precise to the pixel.</li>
-      <li><strong>Visual regression tests</strong> — take full-page snapshots and compare them against a baseline using AI. Catches layout shifts, image swaps, and anything the token tests do not cover.</li>
+      <li><strong>CSS token tests</strong>: read the computed styles the browser actually renders and compare them against a golden spec. Fast, deterministic, and precise to the pixel.</li>
+      <li><strong>Visual regression tests</strong>: take full-page snapshots and compare them against a baseline using AI. Catches layout shifts, image swaps, and anything the token tests do not cover.</li>
     </ul>
 
     <div class="callout">
@@ -253,11 +253,11 @@
       Each page is tested against a spec object that lists the expected computed value for every design token. If a deploy changes a font size, brand colour, or letter spacing, the test fails immediately and names the exact property.
     </div>
 
-    <p>The key technique is <code>getComputedStyle()</code> — the browser's own API for reading what it actually rendered. This is more reliable than reading the stylesheet: it reflects inherited values, overrides, and any runtime changes.</p>
+    <p>The key technique is <code>getComputedStyle()</code>: the browser's own API for reading what it actually rendered. This is more reliable than reading the stylesheet, as it reflects inherited values, overrides, and any runtime changes.</p>
 
     <p>Tokens are defined once as a TypeScript object and reused across every page in that template group. The Artura, Artura Spider, 750S, and 750S Spider pages all share the same spec. The Racing pages share a separate spec because their token values are different.</p>
 
-    <p>The screenshot below shows what happens when the wrong spec is applied to the wrong page — in this case, the supercar token spec being checked against the Racing page. All six token checks fail immediately with a clear message naming the property and the expected vs actual value.</p>
+    <p>The screenshot below shows what happens when the wrong spec is applied to the wrong page. In this case, the supercar token spec is being checked against the Racing page. All six token checks fail immediately with a clear message naming the property and the expected vs actual value.</p>
 
     <figure class="screenshot-block">
       <img src="images/Screenshot%202026-05-24%20180221.png" alt="Playwright HTML report showing CSS token failures. Six tests fail for Racing (wrong group): body font family, H1 colour, H1 font size, CTA background, CTA text colour, and CTA letter spacing.">
@@ -285,18 +285,18 @@
       Playwright drives the browser once. Applitools sends that snapshot to its Ultrafast Grid, which renders it in Chrome, Firefox, and Safari simultaneously and compares each against the approved baseline.
     </div>
 
-    <p>One test run produces three results — one per browser — without the suite needing to navigate the page three times. This is the practical benefit of the Ultrafast Grid: cross-browser coverage at near the cost of a single-browser run.</p>
+    <p>One test run produces three results, one per browser, without the suite needing to navigate the page three times. This is the practical benefit of the Ultrafast Grid: cross-browser coverage at near the cost of a single-browser run.</p>
 
-    <p>The screenshot below shows the Applitools dashboard after a passing run. Three results are shown for "Artura — full page": Firefox 150, Chrome 148, and Safari 26 — all on a 1440x900 desktop viewport.</p>
+    <p>The screenshot below shows the Applitools dashboard after a passing run. Three results are shown for "Artura full page": Firefox 150, Chrome 148, and Safari 26, all on a 1440x900 desktop viewport.</p>
 
     <figure class="screenshot-block">
       <img src="images/Screenshot%202026-05-24%20170857.png" alt="Applitools dashboard showing the McLaren Visual Regression batch. Three results for Artura full page, one each for Firefox, Chrome and Safari, all marked as New and passing.">
       <figcaption>Applitools Ultrafast Grid results: one Playwright test, three browser renders.</figcaption>
     </figure>
 
-    <p>The first time a test runs there is no baseline to compare against. Applitools marks the result as <strong>New</strong> and a human must review the snapshot in the Applitools dashboard and approve it as the benchmark. Only after that approval does the test become a live quality gate — on every subsequent run, Applitools compares the new snapshot against the approved baseline and flags any difference for review.</p>
+    <p>The first time a test runs there is no baseline to compare against. Applitools marks the result as <strong>New</strong> and somebody must review the snapshot in the Applitools dashboard and approve it as the benchmark. Only after that approval does the test become a live quality gate. On every subsequent run, Applitools compares the new snapshot against the approved baseline and flags any difference for review.</p>
 
-    <p>When a legitimate design change is made, the same process repeats: the test shows as <strong>Unresolved</strong>, a reviewer approves the new snapshot, and it becomes the updated baseline. This manual approval step is intentional — it ensures no visual change goes live without a human sign-off, and it creates an audit trail of every approved state.</p>
+    <p>When a legitimate design change is made, the same process repeats: the test shows as <strong>Unresolved</strong>, a reviewer approves the new snapshot, and it becomes the updated baseline. This manual approval step is intentional. It ensures no visual change goes live without a sign-off, and it creates an audit trail of every approved state.</p>
 
     <p>The second static test demonstrates <strong>ignore regions</strong>. The 750S hero image is swapped to a different image before the snapshot is taken. The ignore region excludes it from the diff, so the test passes — demonstrating that the rest of the page is stable even when one dynamic asset changes.</p>
 
@@ -324,8 +324,8 @@
     <p>The two-phase approach:</p>
 
     <ul>
-      <li><strong>Phase 1</strong> — wait until all counters show a non-zero value. This confirms the animation has started and the section is visible.</li>
-      <li><strong>Phase 2</strong> — poll every 300ms and compare the current values to the previous poll. When two consecutive polls match, the animation has finished.</li>
+      <li><strong>Phase 1</strong>: wait until all counters show a non-zero value. This confirms the animation has started and the section is visible.</li>
+      <li><strong>Phase 2</strong>: poll every 300ms and compare the current values to the previous poll. When two consecutive polls match, the animation has finished.</li>
     </ul>
 
     <p>Only then does Applitools take the snapshot. The result is always captured at the settled state — no flicker, no mid-animation frames.</p>
@@ -340,7 +340,7 @@
 </main>
 
 <footer>
-  <p>Built with <a href="https://playwright.dev">Playwright</a> and <a href="https://applitools.com">Applitools Eyes</a> &mdash; Alex Ross, May 2026</p>
+  <p>Built with <a href="https://playwright.dev">Playwright</a> and <a href="https://applitools.com">Applitools Eyes</a>. Alex Ross, May 2026</p>
 </footer>
 
 </body>
