@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import {
   SUPERCAR_PAGES,
   RACING_PAGES,
+  SUPERCAR_PAGES_WITH_FAILURE,
   type PageTokenSpec,
 } from '../fixtures/token-specs';
 
@@ -38,6 +39,6 @@ test.describe('Racing — token contracts', () => {
 });
 
 // To demo the failure, also add SUPERCAR_PAGES_WITH_FAILURE to the import above, then uncomment:
-// test.describe('Cross-template failure demo', () => {
-//   tokenSuite(SUPERCAR_PAGES_WITH_FAILURE);
-// });
+test.describe('Cross-template failure demo', () => {
+  tokenSuite(SUPERCAR_PAGES_WITH_FAILURE);
+});
