@@ -294,6 +294,10 @@
       <figcaption>Applitools Ultrafast Grid results: one Playwright test, three browser renders.</figcaption>
     </figure>
 
+    <p>The first time a test runs there is no baseline to compare against. Applitools marks the result as <strong>New</strong> and a human must review the snapshot in the Applitools dashboard and approve it as the benchmark. Only after that approval does the test become a live quality gate — on every subsequent run, Applitools compares the new snapshot against the approved baseline and flags any difference for review.</p>
+
+    <p>When a legitimate design change is made, the same process repeats: the test shows as <strong>Unresolved</strong>, a reviewer approves the new snapshot, and it becomes the updated baseline. This manual approval step is intentional — it ensures no visual change goes live without a human sign-off, and it creates an audit trail of every approved state.</p>
+
     <p>The second static test demonstrates <strong>ignore regions</strong>. The 750S hero image is swapped to a different image before the snapshot is taken. The ignore region excludes it from the diff, so the test passes — demonstrating that the rest of the page is stable even when one dynamic asset changes.</p>
 
     <div class="callout">
