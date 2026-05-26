@@ -264,6 +264,13 @@
       <figcaption>CSS token failure demo: the Racing page checked against the supercar spec. Six failures, each naming the exact property that is wrong. The Artura tests above them all pass.</figcaption>
     </figure>
 
+    <p>Drilling into a single failure shows exactly what went wrong. The test expected the supercar font stack — <code>"Noto Sans", ui-sans-serif, system-ui</code> — but the Racing page returned <code>"Noto Sans Fallback"</code> as an additional entry. The difference is highlighted directly in the report.</p>
+
+    <figure class="screenshot-block">
+      <img src="images/error_report.png" alt="Playwright HTML report showing a single token failure in detail. The body font family test fails: expected Noto Sans ui-sans-serif system-ui but received Noto Sans with Noto Sans Fallback added. The difference is highlighted in red.">
+      <figcaption>Failure detail: expected vs received values shown inline. The exact property, selector, and line number are all reported. No ambiguity about what changed or where.</figcaption>
+    </figure>
+
     <div class="callout">
       <h3>Why this is useful as a quality gate</h3>
       <p>Token tests run in seconds and need no visual comparison or baseline image. They can be added to the CI pipeline on every pull request and will catch template regressions before they reach production.</p>
